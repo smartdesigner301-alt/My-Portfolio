@@ -1,55 +1,9 @@
-name: Deploy to GitHub Pages
+# This workflow is deprecated in favor of deploy-pages.yml.
+# It has been disabled to prevent duplicate/conflicting deployment runs.
+
+name: Deprecated Deployment Workflow
 
 on:
   push:
-    branches: [ main ]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build --if-present
-
-      - name: Generate index.html for static client
-        run: |
-          set -e
-          # locate client assets
-          ASSET_DIR=dist/client/assets
-          JS_FILE=$(ls $ASSET_DIR/index*.js 2>/dev/null | head -n1 || true)
-          CSS_FILE=$(ls $ASSET_DIR/*styles*.css 2>/dev/null | head -n1 || true)
-          JS_B=$(basename "$JS_FILE")
-          CSS_B=$(basename "$CSS_FILE")
-          mkdir -p dist/client
-          cat > dist/client/index.html <<EOF
-          <!doctype html>
-          <html>
-            <head>
-              <meta charset="utf-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <title>My Portfolio</title>
-              ${CSS_B:+<link rel="stylesheet" href="./assets/${CSS_B}">}
-            </head>
-            <body>
-              <div id="root"></div>
-              ${JS_B:+<script type="module" src="./assets/${JS_B}"></script>}
-            </body>
-          </html>
-          EOF
-
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/client
+    branches:
+      - _disabled_
